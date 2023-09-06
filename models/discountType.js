@@ -1,13 +1,22 @@
-
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    const DiscountType = sequelize.define('DiscountType', {
-      type: DataTypes.STRING, // 'fixed' or 'percent'
+  class discountType extends Model {
+    static associate(models) {
+      discountType.associate = (models) => {
+        discountType.belongsTo(models.Coupon);
+      };
+    }
+  }
+  discountType.init(
+    {
+      type: DataTypes.STRING,
       value: DataTypes.FLOAT,
-    });
-  
-    DiscountType.associate = (models) => {
-      DiscountType.belongsTo(models.Coupon);
-    };
-  
-    return DiscountType;
-  };
+    },
+    {
+      sequelize,
+      modelName: "discountType",
+    }
+  );
+  return discountType;
+};

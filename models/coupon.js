@@ -1,13 +1,22 @@
-
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    const Coupon = sequelize.define('Coupon', {
+  class Coupon extends Model {
+    static associate(models) {
+      Coupon.associate = (models) => {
+        Coupon.Rule = Coupon.hasMany(models.rule);
+        Coupon.DiscountType = Coupon.hasMany(models.discountType);
+      };
+    }
+  }
+  Coupon.init(
+    {
       code: DataTypes.STRING,
-    });
-  
-    Coupon.associate = (models) => {
-      Coupon.Rule = Coupon.hasMany(models.Rule);
-      Coupon.DiscountType = Coupon.hasMany(models.DiscountType);
-    };
-  
-    return Coupon;
-  };
+    },
+    {
+      sequelize,
+      modelName: "Coupon",
+    }
+  );
+  return Coupon;
+};
